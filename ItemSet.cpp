@@ -17,6 +17,7 @@ class ItemSet
         void setListaItens(vector<string> _listaItens);
         void inserir(string s);
         void excluir(string s);
+        ItemSet operator+(ItemSet c);
 };
 
 ItemSet::ItemSet(/* args */)
@@ -76,38 +77,63 @@ void ItemSet::excluir(string s)
     }
 }
 
-int main(void) {
-    ItemSet itemSet;
+ItemSet ItemSet::operator+(ItemSet c) {
+    ItemSet a, b;
+    bool inserir;
+    a.setListaItens(listaItens);
 
-    cout << "\nInserindo itens" << endl;
-    itemSet.inserir("item1");
-    itemSet.inserir("item2");
-    itemSet.inserir("item3");
-    itemSet.inserir("item4");
-    itemSet.inserir("item5");
-
-    for (string s : itemSet.getListaItens())
+    for (string itemC : c.getListaItens())
     {
-        cout << s << "\t";
-    }
+        inserir = true;
 
-    cout << "\n\nTentando inserir item4 novamente" << endl;
-    itemSet.inserir("item4");
+        for (string itemB : listaItens)
+        {
+            if (itemC == itemB)
+            {
+                inserir = false;
+                break;
+            }
+        }
 
-    for (string s : itemSet.getListaItens())
-    {
-        cout << s << "\t";
-    }
-
-    cout << "\n\nExcluindo itens 3 e 5" << endl;
-    itemSet.excluir("item5");
-    itemSet.excluir("item3");
-
-    for (string s : itemSet.getListaItens())
-    {
-        cout << s << "\t";
+        if (inserir)
+        {
+            a.inserir(itemC);
+        }
     }
     
+    return a;
+}
+
+int main(void) {
+    ItemSet itemA, itemB, itemC;
+
+    vector<string> listaItensB = {"1", "2", "3", "4", "5"};
+    vector<string> listaItensC = {"8", "7", "6", "5", "4", "3"};
+
+    itemB.setListaItens(listaItensB);
+    itemC.setListaItens(listaItensC);
+
+    //'A' recebe todos os itens de 'B' e os itens de 'C' que não se repetem em 'B'.
+    itemA = itemB + itemC;
+
+    cout << "\nB =\t";
+    for (string s : itemB.getListaItens())
+    {
+        cout << s << "\t";
+    }
+
+    cout << "\n\nC =\t";
+    for (string s : itemC.getListaItens())
+    {
+        cout << s << "\t";
+    }
+
+    cout << "\n\nA = B + c =>\t";
+    for (string s : itemA.getListaItens())
+    {
+        cout << s << "\t";
+    }
+
     cout << endl << endl;
     return 0;
 }
