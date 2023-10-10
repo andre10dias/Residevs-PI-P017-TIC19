@@ -18,12 +18,12 @@ public:
     void setListaItens(vector<string> _listaItens);
     void inserir(string s);
     void excluir(string s);
+    int localizarItem(string &item_a_buscar);
 
     ItemSet operator+(ItemSet c);
     ItemSet &operator=(const ItemSet &b);
     ItemSet operator*(ItemSet c);
-
-    
+    ItemSet operator-(ItemSet &C);
 };
 
 ItemSet::ItemSet() {}
@@ -140,10 +140,26 @@ ItemSet ItemSet::operator+(ItemSet c)
     return a;
 }
 
-ItemSet ItemSet::operator*(ItemSet c){
+ItemSet ItemSet::operator-(ItemSet &C)
+{
+    ItemSet result;
+    for (string &item : listaItens)
+    {
+        
+        if (C.localizarItem(item) == -1) 
+        {
+            result.inserir(item);
+        }
+    }
+    *this = result;
+    return *this;
+}
+
+ItemSet ItemSet::operator*(ItemSet c)
+{
     ItemSet b, interssecao;
     vector<string> itensU;
-    
+
     b.setListaItens(listaItens);
 
     for (string itemB : listaItens)
@@ -151,7 +167,7 @@ ItemSet ItemSet::operator*(ItemSet c){
         for (string itemC : c.listaItens)
         {
             if (itemB == itemC)
-            itensU.push_back(itemC);
+                itensU.push_back(itemC);
         }
     }
 
@@ -159,10 +175,22 @@ ItemSet ItemSet::operator*(ItemSet c){
 
     return interssecao;
 }
+int ItemSet::localizarItem(string &item_a_buscar)
+{
+    for (int i = 0; i < listaItens.size(); i++)
+    {
+        if (listaItens[i] == item_a_buscar)
+        {
+            return i;
+        }
+    }
+    return -1;
+}
 
 void testeOperadorAdicao(ItemSet itemB, ItemSet itemC);
 void testeOperadorIgualdade(ItemSet itemB);
 void testeOperadorMultiplicacao(ItemSet itemB, ItemSet itemC);
+void testeOperadorDiferenca(ItemSet &itemB, ItemSet &itemC);
 
 int main(void)
 {
@@ -177,12 +205,41 @@ int main(void)
     testeOperadorAdicao(itemB, itemC);
     testeOperadorIgualdade(itemB);
     testeOperadorMultiplicacao(itemB, itemC);
+    testeOperadorDiferenca(itemB, itemC); // Novo teste para o operador de diferença
 
-    cout << endl << endl;
+
+    cout << endl
+         << endl;
     return 0;
 }
+void testeOperadorDiferenca(ItemSet &itemB, ItemSet &itemC)
+{
+    ItemSet itemA;
 
-void testeOperadorAdicao(ItemSet itemB, ItemSet itemC) {
+    cout << "\nB =\t";
+    for (string s : itemB.getListaItens())
+    {
+        cout << s << "\t";
+    }
+
+    cout << "\n\nC =\t";
+    for (string s : itemC.getListaItens())
+    {
+        cout << s << "\t";
+    }
+
+    //'A' recebe os itens de 'B' que não estão em 'C'.
+    itemA = itemB - itemC;
+    cout << "\n\nA = B - C =>\t";
+    for (string s : itemA.getListaItens())
+    {
+        cout << s << "\t";
+    }
+}
+
+
+void testeOperadorAdicao(ItemSet itemB, ItemSet itemC)
+{
     ItemSet itemA;
 
     cout << "\nB =\t";
@@ -206,7 +263,8 @@ void testeOperadorAdicao(ItemSet itemB, ItemSet itemC) {
     }
 }
 
-void testeOperadorIgualdade(ItemSet itemB) {
+void testeOperadorIgualdade(ItemSet itemB)
+{
     ItemSet itemA;
 
     itemA = itemB;
@@ -217,10 +275,11 @@ void testeOperadorIgualdade(ItemSet itemB) {
     }
 }
 
-void testeOperadorMultiplicacao(ItemSet itemB, ItemSet itemC) {
+void testeOperadorMultiplicacao(ItemSet itemB, ItemSet itemC)
+{
     ItemSet itemA;
 
-    //A recebe os itens de B que ocorrem também em C.
+    // A recebe os itens de B que ocorrem também em C.
     itemA = itemB * itemC;
     cout << "\n\nA = B * C =>\t";
     for (string s : itemA.getListaItens())
