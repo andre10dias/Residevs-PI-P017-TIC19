@@ -160,10 +160,13 @@ ItemSet ItemSet::operator*(ItemSet c){
     return interssecao;
 }
 
+void testeOperadorAdicao(ItemSet itemB, ItemSet itemC);
+void testeOperadorIgualdade(ItemSet itemB);
+void testeOperadorMultiplicacao(ItemSet itemB, ItemSet itemC);
 
 int main(void)
 {
-    ItemSet itemA, itemB, itemC;
+    ItemSet itemB, itemC;
 
     vector<string> listaItensB = {"1", "2", "3", "4", "5"};
     vector<string> listaItensC = {"8", "7", "6", "5", "4", "3"};
@@ -171,6 +174,16 @@ int main(void)
     itemB.setListaItens(listaItensB);
     itemC.setListaItens(listaItensC);
 
+    testeOperadorAdicao(itemB, itemC);
+    testeOperadorIgualdade(itemB);
+    testeOperadorMultiplicacao(itemB, itemC);
+
+    cout << endl << endl;
+    return 0;
+}
+
+void testeOperadorAdicao(ItemSet itemB, ItemSet itemC) {
+    ItemSet itemA;
 
     cout << "\nB =\t";
     for (string s : itemB.getListaItens())
@@ -184,13 +197,6 @@ int main(void)
         cout << s << "\t";
     }
 
-    itemA = itemB;
-    cout << "\n\nA = B =>\t";
-    for (string s : itemA.getListaItens())
-    {
-        cout << s << "\t";
-    }
-
     //'A' recebe todos os itens de 'B' e os itens de 'C' que não se repetem em 'B'.
     itemA = itemB + itemC;
     cout << "\n\nA = B + c =>\t";
@@ -198,6 +204,21 @@ int main(void)
     {
         cout << s << "\t";
     }
+}
+
+void testeOperadorIgualdade(ItemSet itemB) {
+    ItemSet itemA;
+
+    itemA = itemB;
+    cout << "\n\nA = B =>\t";
+    for (string s : itemA.getListaItens())
+    {
+        cout << s << "\t";
+    }
+}
+
+void testeOperadorMultiplicacao(ItemSet itemB, ItemSet itemC) {
+    ItemSet itemA;
 
     //A recebe os itens de B que ocorrem também em C.
     itemA = itemB * itemC;
@@ -206,8 +227,4 @@ int main(void)
     {
         cout << s << "\t";
     }
-
-    cout << endl
-         << endl;
-    return 0;
 }
