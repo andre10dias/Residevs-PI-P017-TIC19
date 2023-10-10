@@ -175,6 +175,7 @@ ItemSet ItemSet::operator*(ItemSet c)
 
     return interssecao;
 }
+
 int ItemSet::localizarItem(string &item_a_buscar)
 {
     for (int i = 0; i < listaItens.size(); i++)
@@ -212,6 +213,7 @@ int main(void)
          << endl;
     return 0;
 }
+
 void testeOperadorDiferenca(ItemSet &itemB, ItemSet &itemC)
 {
     ItemSet itemA;
@@ -236,7 +238,6 @@ void testeOperadorDiferenca(ItemSet &itemB, ItemSet &itemC)
         cout << s << "\t";
     }
 }
-
 
 void testeOperadorAdicao(ItemSet itemB, ItemSet itemC)
 {
