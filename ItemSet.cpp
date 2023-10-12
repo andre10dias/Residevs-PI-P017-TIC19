@@ -23,7 +23,8 @@ public:
     ItemSet operator+(ItemSet c);
     ItemSet &operator=(const ItemSet &b);
     ItemSet operator*(ItemSet c);
-    ItemSet operator-(ItemSet &C);
+    ItemSet operator-(ItemSet C);
+    ItemSet operator&(ItemSet C);//vamos utilizar o operador & para sobrecarregar já que o operador <> nao é aceito
 };
 
 ItemSet::ItemSet() {}
@@ -140,7 +141,7 @@ ItemSet ItemSet::operator+(ItemSet c)
     return a;
 }
 
-ItemSet ItemSet::operator-(ItemSet &C)
+ItemSet ItemSet::operator-(ItemSet C)
 {
     ItemSet result;
     for (string &item : listaItens)
@@ -151,10 +152,37 @@ ItemSet ItemSet::operator-(ItemSet &C)
             result.inserir(item);
         }
     }
-    *this = result;
-    return *this;
+    return result;
 }
-
+ItemSet ItemSet::operator&(ItemSet C){
+    ItemSet delta;
+    for (string &item : listaItens)
+    {
+        
+        if (C.localizarItem(item) == -1) 
+        {
+            delta.inserir(item);
+        }
+    }
+    int indiceEncontrou;
+    for (string itemC : C.getListaItens()){
+        indiceEncontrou = -1;
+        for (int i = 0; i < listaItens.size(); i++)
+        {
+            if (listaItens[i] == itemC)
+            {
+                indiceEncontrou = i;
+                break;
+            }
+        }
+        if (indiceEncontrou == -1) 
+        {
+            delta.inserir(itemC);
+        }
+    }
+    
+   return delta;
+}
 ItemSet ItemSet::operator*(ItemSet c)
 {
     ItemSet b, interssecao;
@@ -192,6 +220,7 @@ void testeOperadorAdicao(ItemSet itemB, ItemSet itemC);
 void testeOperadorIgualdade(ItemSet itemB);
 void testeOperadorMultiplicacao(ItemSet itemB, ItemSet itemC);
 void testeOperadorDiferenca(ItemSet &itemB, ItemSet &itemC);
+void testeOperadorDelta(ItemSet itemB, ItemSet itemC);
 
 int main(void)
 {
@@ -207,11 +236,38 @@ int main(void)
     testeOperadorIgualdade(itemB);
     testeOperadorMultiplicacao(itemB, itemC);
     testeOperadorDiferenca(itemB, itemC); // Novo teste para o operador de diferença
+    testeOperadorDelta(itemB, itemC);
 
 
     cout << endl
          << endl;
     return 0;
+}
+
+void testeOperadorDelta(ItemSet itemB, ItemSet itemC)
+{
+    ItemSet itemA;
+    cout << endl << endl;
+    cout << "B =    ";
+    for (string s : itemB.getListaItens())
+    {
+        cout << s << "\t";
+    }
+    cout << endl << endl;
+    cout << "C =    ";
+    for (string s : itemC.getListaItens())
+    {
+        cout << s << "\t";
+    }
+
+    //'A' recebe a união entre os itens que estão em 'B' mas não em 'C',  além dos elementos que estão em 'C' mas não em 'B'
+    itemA = itemB & itemC;
+    cout << endl << endl;
+    cout << "A = B <> C =>  ";
+    for (string s : itemA.getListaItens())
+    {
+        cout << s << "\t";
+    }
 }
 
 void testeOperadorDiferenca(ItemSet &itemB, ItemSet &itemC)
