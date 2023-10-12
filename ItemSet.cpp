@@ -154,8 +154,11 @@ ItemSet ItemSet::operator-(ItemSet C)
     }
     return result;
 }
+
 ItemSet ItemSet::operator&(ItemSet C){
+    int indiceEncontrou;
     ItemSet delta;
+
     for (string &item : listaItens)
     {
         
@@ -164,9 +167,11 @@ ItemSet ItemSet::operator&(ItemSet C){
             delta.inserir(item);
         }
     }
-    int indiceEncontrou;
+
+    
     for (string itemC : C.getListaItens()){
         indiceEncontrou = -1;
+
         for (int i = 0; i < listaItens.size(); i++)
         {
             if (listaItens[i] == itemC)
@@ -175,6 +180,7 @@ ItemSet ItemSet::operator&(ItemSet C){
                 break;
             }
         }
+
         if (indiceEncontrou == -1) 
         {
             delta.inserir(itemC);
@@ -183,6 +189,7 @@ ItemSet ItemSet::operator&(ItemSet C){
     
    return delta;
 }
+
 ItemSet ItemSet::operator*(ItemSet c)
 {
     ItemSet b, interssecao;
@@ -213,6 +220,7 @@ int ItemSet::localizarItem(string &item_a_buscar)
             return i;
         }
     }
+
     return -1;
 }
 
@@ -238,9 +246,7 @@ int main(void)
     testeOperadorDiferenca(itemB, itemC); // Novo teste para o operador de diferença
     testeOperadorDelta(itemB, itemC);
 
-
-    cout << endl
-         << endl;
+    cout << endl << endl;
     return 0;
 }
 
@@ -249,20 +255,24 @@ void testeOperadorDelta(ItemSet itemB, ItemSet itemC)
     ItemSet itemA;
     cout << endl << endl;
     cout << "B =    ";
+
     for (string s : itemB.getListaItens())
     {
         cout << s << "\t";
     }
+
     cout << endl << endl;
+
     cout << "C =    ";
     for (string s : itemC.getListaItens())
     {
         cout << s << "\t";
     }
 
+    cout << endl << endl;
+
     //'A' recebe a união entre os itens que estão em 'B' mas não em 'C',  além dos elementos que estão em 'C' mas não em 'B'
     itemA = itemB & itemC;
-    cout << endl << endl;
     cout << "A = B <> C =>  ";
     for (string s : itemA.getListaItens())
     {
