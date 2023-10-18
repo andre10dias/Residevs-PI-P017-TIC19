@@ -25,6 +25,7 @@ public:
     ItemSet operator*(ItemSet c);
     ItemSet operator-(ItemSet C);
     ItemSet operator&(ItemSet C);//vamos utilizar o operador & para sobrecarregar já que o operador <> nao é aceito
+    bool operator==(ItemSet C);
 };
 
 ItemSet::ItemSet() {}
@@ -211,6 +212,23 @@ ItemSet ItemSet::operator*(ItemSet c)
     return interssecao;
 }
 
+bool ItemSet::operator==(ItemSet C) 
+{
+    for (string item : listaItens) {
+        if (C.localizarItem(item) == -1) {
+            return false;
+        }
+    }
+
+    for (string item : C.getListaItens()) {
+        if (localizarItem(item) == -1) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
 int ItemSet::localizarItem(string &item_a_buscar)
 {
     for (int i = 0; i < listaItens.size(); i++)
@@ -225,26 +243,31 @@ int ItemSet::localizarItem(string &item_a_buscar)
 }
 
 void testeOperadorAdicao(ItemSet itemB, ItemSet itemC);
-void testeOperadorIgualdade(ItemSet itemB);
+void testeOperadorAtribuicao(ItemSet itemB);
 void testeOperadorMultiplicacao(ItemSet itemB, ItemSet itemC);
 void testeOperadorDiferenca(ItemSet &itemB, ItemSet &itemC);
 void testeOperadorDelta(ItemSet itemB, ItemSet itemC);
+void testeOperadorIgualdade(ItemSet itemB, ItemSet itemC);
 
 int main(void)
 {
-    ItemSet itemB, itemC;
+    ItemSet itemB, itemC, itemD;
 
     vector<string> listaItensB = {"1", "2", "3", "4", "5"};
     vector<string> listaItensC = {"8", "7", "6", "5", "4", "3"};
+    vector<string> listaItensD = {"1", "2", "3", "4", "5"};
 
     itemB.setListaItens(listaItensB);
     itemC.setListaItens(listaItensC);
+    itemD.setListaItens(listaItensD);
 
     testeOperadorAdicao(itemB, itemC);
-    testeOperadorIgualdade(itemB);
+    testeOperadorAtribuicao(itemB);
     testeOperadorMultiplicacao(itemB, itemC);
     testeOperadorDiferenca(itemB, itemC); // Novo teste para o operador de diferença
     testeOperadorDelta(itemB, itemC);
+    testeOperadorIgualdade(itemB, itemC);
+    testeOperadorIgualdade(itemB, itemD);
 
     cout << endl << endl;
     return 0;
@@ -330,7 +353,7 @@ void testeOperadorAdicao(ItemSet itemB, ItemSet itemC)
     }
 }
 
-void testeOperadorIgualdade(ItemSet itemB)
+void testeOperadorAtribuicao(ItemSet itemB)
 {
     ItemSet itemA;
 
@@ -353,4 +376,12 @@ void testeOperadorMultiplicacao(ItemSet itemB, ItemSet itemC)
     {
         cout << s << "\t";
     }
+}
+
+void testeOperadorIgualdade(ItemSet itemB, ItemSet itemC)
+{
+    // Testa se ambos os valores são iguais.
+    bool is_igual = itemB == itemC;
+    
+    cout << "\n\nA == B => " << (is_igual ? "True" : "False") << "\t";
 }
