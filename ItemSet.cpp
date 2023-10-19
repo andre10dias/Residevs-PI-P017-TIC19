@@ -6,26 +6,26 @@ using namespace std;
 
 class ItemSet
 {
-private:
-    vector<string> listaItens;
-    bool itemCadastrado(string s);
+    private:
+        vector<string> listaItens;
+        bool itemCadastrado(string s);
 
-public:
-    ItemSet();
-    ItemSet(const ItemSet &b);
-    ~ItemSet();
-    vector<string> getListaItens();
-    void setListaItens(vector<string> _listaItens);
-    void inserir(string s);
-    void excluir(string s);
-    int localizarItem(string &item_a_buscar);
+    public:
+        ItemSet();
+        ItemSet(const ItemSet &b);
+        ~ItemSet();
+        vector<string> getListaItens();
+        void setListaItens(vector<string> _listaItens);
+        void inserir(string s);
+        void excluir(string s);
+        int localizarItem(string &item_a_buscar);
 
-    ItemSet operator+(ItemSet c);
-    ItemSet &operator=(const ItemSet &b);
-    ItemSet operator*(ItemSet c);
-    ItemSet operator-(ItemSet C);
-    ItemSet operator&(ItemSet C);//vamos utilizar o operador & para sobrecarregar já que o operador <> nao é aceito
-    bool operator==(ItemSet C);
+        ItemSet operator+(ItemSet c);
+        ItemSet &operator=(const ItemSet &b);
+        ItemSet operator*(ItemSet c);
+        ItemSet operator-(ItemSet C);
+        ItemSet operator&(ItemSet C);//vamos utilizar o operador & para sobrecarregar já que o operador <> nao é aceito
+        bool operator==(ItemSet C);
 };
 
 ItemSet::ItemSet() {}
